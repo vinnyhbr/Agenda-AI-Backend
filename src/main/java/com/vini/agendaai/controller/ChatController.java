@@ -31,7 +31,8 @@ public class ChatController {
     public ResponseEntity<ChatMessageDto> sendMessage(
             @AuthenticationPrincipal UserPrincipal userPrincipal,
             @Valid @RequestBody ChatRequestDto request) {
-        
+
+
         User user = userService.findByEmail(userPrincipal.getEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
