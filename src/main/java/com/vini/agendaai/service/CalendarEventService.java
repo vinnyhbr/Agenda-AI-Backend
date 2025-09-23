@@ -156,6 +156,19 @@ public class CalendarEventService {
         }
     }
 
+    @Transactional
+    public CalendarEvent createEventFromChat(User user, String title, LocalDateTime dateTime) {
+        CalendarEventDto eventDto = CalendarEventDto.builder()
+                .title(title)
+                .startTime(dateTime)
+                .endTime(dateTime.plusHours(1)) // padrão: 1h de duração
+                .isAllDay(false)
+                .build();
+        CalendarEventDto created = createEvent(user, eventDto);
+        // Buscar entidade persistida para obter o ID
+        return calendarEventRepository.findById(created.getId()).orElseThrow();
+    }
+
     private CalendarEventDto convertToDto(CalendarEvent event) {
         return CalendarEventDto.builder()
                 .id(event.getId())
